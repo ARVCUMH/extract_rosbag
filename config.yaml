@@ -1,0 +1,32 @@
+#EJECUTAR EN LA TERMINAL DE PYCHARM
+# python3 main.py
+
+rosbag_path: "/media/arvc/INTENSO/DATASETS/campus/campus.bag"
+output_path: "/media/arvc/INTENSO/DATASETS/campus"
+
+topic_name_point_cloud: "/ouster/points" # /os1/pointCloud
+topic_name_odometry: "/odometry/filtered"
+topic_name_ground_truth: "/ground_truth/state"
+topic_name_gps: "/fix"
+topic_name_imu: "/imu/data"
+topic_name_camera: "/aravis_cam/aravis_cam/image_raw"
+topic_name_tf: "/tf"
+topic_name_tf_static: "/tf_static"
+topic_name_gps_filtered: "/gps/filtered"
+topic_name_odometry_gps: "/odometry/gps"
+
+extract_topics:
+  odometry: True
+  lidar2pcd: True
+  lidar2csv: False
+  ground_truth: False #just for simulation
+  gps: True
+  imu: True
+  camera: False
+  tf: True
+  tf_static: True
+  gps_filtered: True
+  odometry_gps: True
+
+
+
