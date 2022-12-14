@@ -17,6 +17,10 @@ robot0/
 @Authors: Antonio Santo and Arturo Gil
           arturo.gil@umh.es
 @Time: November 2022
+
+pip install --ignore-installed  --extra-index-url https://rospypi.github.io/simple/ rospy rosbag sensor-msgs geometry-msgs cv_bridge
+pip install opencv-python
+pip install requirements.txt
 """
 import rosbag
 import yaml
@@ -115,11 +119,7 @@ if __name__ == '__main__':
         except IndexError:
             print('Error saving', topic_name_imu)
             pass
-    print(extract_lidar2csv)
-    print(extract_lidar2pcd)
     if extract_lidar2csv or extract_lidar2pcd:
-        print(extract_lidar2csv)
-        print(extract_lidar2pcd)
         try:
             print('Saving: ', topic_name_point_cloud)
             eurocsaver.save_lidar(bag, topic_name_point_cloud, extract_lidar2csv, extract_lidar2pcd)

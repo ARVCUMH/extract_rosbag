@@ -1,8 +1,8 @@
 #EJECUTAR EN LA TERMINAL DE PYCHARM
 # python3 main.py
 
-rosbag_path: "/media/arvc/INTENSO/DATASETS/campus/campus.bag"
-output_path: "/media/arvc/INTENSO/DATASETS/campus"
+rosbag_path: "/home/arvc/virtual_envs/extract_rosbag_def/try.bag"
+output_path: "/home/arvc/virtual_envs/extract_rosbag_def/ey"
 
 topic_name_point_cloud: "/ouster/points" # /os1/pointCloud
 topic_name_odometry: "/odometry/filtered"
@@ -21,12 +21,9 @@ extract_topics:
   lidar2csv: False
   ground_truth: False #just for simulation
   gps: True
-  imu: True
-  camera: False
+  imu: False
+  camera: True
   tf: True
   tf_static: True
-  gps_filtered: True
-  odometry_gps: True
-
-
-
+  gps_filtered: False
+  odometry_gps: False

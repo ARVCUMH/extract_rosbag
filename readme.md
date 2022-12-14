@@ -1,16 +1,43 @@
-#EXTRACT ROSBAG
+# EXTRACT ROSBAG
 Extracts a rosbag file (ROS) and converts it to a EUROC/ASL format.
 
 The basic structure of the format is a set of directories containing:
+```
+├── robot0
+   ├── camera
+   │    ├── /*.png
+   ├── gps0
+   │    ├── /data.csv
+   ├── gps_filtered
+   │     ├── /data.csv
+   ├── ground_truth
+   │    ├── /data.csv
+   ├── imu0
+   │    ├── /data.csv
+   ├── lidar
+   │    ├── /*.pcd
+   ├──odom
+   │    ├── /data.csv
+   ├── odometry_gps
+   │    ├── /data.csv  
+   ├──tf
+   │    ├── /data.csv
+   └── tf_static
+        ├── /data.csv
+```
 
-robot0/
-    gps0/data.csv
-    lidar/
-    odom/
-    ground_truth/
+# INSTALL
+Install the requirements with:
+- ./install.sh
+# USAGE
+First we activate the virtual environment created during installation.
+- source setup.sh
+
+Now, we just run the python file once the YAML file was properly configured.
+- python3 extract_rosbag.py
 
 
-##USAGE
+# Setup YAML
 
 Configure the following variables in config.yaml, for example:
 
@@ -20,7 +47,6 @@ Configure the following variables in config.yaml, for example:
 
 
 Next: configure the topics that will be read and extracted
-
 
 topic_name_point_cloud: "/ouster/points" # /os1/pointCloud\
 topic_name_odometry: "/odometry/filtered"\
@@ -46,13 +72,3 @@ extract_topics:\
   tf_static: True\
   gps_filtered: True\
   odometry_gps: True\
-
-
-Next, just execute: $ python3 extract_rosbag.py
-
-
-##INSTALL
-Install the requirements. e.g. pip3 install -r requirements.txt
-
-Install ROS related libraries with:\
- pip install --ignore-installed  --extra-index-url https://rospypi.github.io/simple/ rospy rosbag cv-bridge sensor-msgs

@@ -1,8 +1,0 @@
-pyyaml
-rosbag
-rospy
-numpy
-pandas
-open3d
-cv2
-cv_bridge
