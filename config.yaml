@@ -1,19 +1,21 @@
-#EJECUTAR EN LA TERMINAL DE PYCHARM
+# PARAM CONFIGURATION FILE:
+# Please, use,
+# >> rosbag info file.bag
+# to find the correct topic names.
+#
+# EXECUTION:
 # python3 extract_rosbag.py
 
-#rosbag_path: "/media/arvc/INTENSO/DATASETS/campus/campus.bag"
-#output_path: "/media/arvc/INTENSO/DATASETS/campus"
-
 # specify input and ouput files
-rosbag_path: "/media/arvc/INTENSO/DATASETS/2024-03-06/2024-03-06-17-30-39.bag"
-output_path: "/media/arvc/INTENSO/DATASETS/2024-03-06/2024-03-06-17-30-39"
+rosbag_path: "/media/arvc/INTENSO/DATASETS/OUTDOOR/2024-03-06-17-30-39.bag"
+output_path: "/media/arvc/INTENSO/DATASETS/OUTDOOR/2024-03-06-17-30-39"
 
 # Specify the topic name or null to save the data
 # ODOMETRY
 topic_name_odometry: '/husky_velocity_controller/odom' #"/odometry/filtered"
 
 # GPS
-topic_name_gps: null #"/gnss/fix"
+topic_name_gps: "/gnss/fix"
 topic_name_gps_filtered: null # "/gps/filtered"
 topic_name_odometry_gps: null # "/odometry/gps"
 
@@ -22,12 +24,14 @@ topic_name_point_cloud: "/ouster/points" # /os1/pointCloud
 save_point_cloud_as_pcd: True
 save_point_cloud_as_csv: False
 
-# GROUND TRUTH
-topic_name_ground_truth: null # "/ground_truth/state"
+# IMU
 topic_name_imu: "/imu/data"
 
 # CAMERA
 topic_name_camera: null # "/aravis_cam/aravis_cam/image_raw"
+
+# GROUND TRUTH
+topic_name_ground_truth: null # "/ground_truth/state"
 
 # Save transforms if needed
 topic_name_tf: null #"/tf"
