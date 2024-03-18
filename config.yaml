@@ -1,29 +1,38 @@
 #EJECUTAR EN LA TERMINAL DE PYCHARM
-# python3 main.py
+# python3 extract_rosbag.py
 
-rosbag_path: "/home/arvc/virtual_envs/extract_rosbag_def/try.bag"
-output_path: "/home/arvc/virtual_envs/extract_rosbag_def/ey"
+#rosbag_path: "/media/arvc/INTENSO/DATASETS/campus/campus.bag"
+#output_path: "/media/arvc/INTENSO/DATASETS/campus"
 
+# specify input and ouput files
+rosbag_path: "/media/arvc/INTENSO/DATASETS/2024-03-06/2024-03-06-17-30-39.bag"
+output_path: "/media/arvc/INTENSO/DATASETS/2024-03-06/2024-03-06-17-30-39"
+
+# Specify the topic name or null to save the data
+# ODOMETRY
+topic_name_odometry: '/husky_velocity_controller/odom' #"/odometry/filtered"
+
+# GPS
+topic_name_gps: null #"/gnss/fix"
+topic_name_gps_filtered: null # "/gps/filtered"
+topic_name_odometry_gps: null # "/odometry/gps"
+
+# LIDAR
 topic_name_point_cloud: "/ouster/points" # /os1/pointCloud
-topic_name_odometry: "/odometry/filtered"
-topic_name_ground_truth: "/ground_truth/state"
-topic_name_gps: "/fix"
-topic_name_imu: "/imu/data"
-topic_name_camera: "/aravis_cam/aravis_cam/image_raw"
-topic_name_tf: "/tf"
-topic_name_tf_static: "/tf_static"
-topic_name_gps_filtered: "/gps/filtered"
-topic_name_odometry_gps: "/odometry/gps"
+save_point_cloud_as_pcd: True
+save_point_cloud_as_csv: False
 
-extract_topics:
-  odometry: True
-  lidar2pcd: True
-  lidar2csv: False
-  ground_truth: False #just for simulation
-  gps: True
-  imu: False
-  camera: True
-  tf: True
-  tf_static: True
-  gps_filtered: False
-  odometry_gps: False
+# GROUND TRUTH
+topic_name_ground_truth: null # "/ground_truth/state"
+topic_name_imu: "/imu/data"
+
+# CAMERA
+topic_name_camera: null # "/aravis_cam/aravis_cam/image_raw"
+
+# Save transforms if needed
+topic_name_tf: null #"/tf"
+topic_name_tf_static: null # "/tf_static"
+
+
+
+
