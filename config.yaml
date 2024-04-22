@@ -7,8 +7,11 @@
 # python3 extract_rosbag.py
 
 # specify input and ouput files
-rosbag_path: "/media/arvc/INTENSO/DATASETS/OUTDOOR/2024-03-06-17-30-39.bag"
-output_path: "/media/arvc/INTENSO/DATASETS/OUTDOOR/2024-03-06-17-30-39"
+#rosbag_path: "/media/arvc/INTENSO/DATASETS/OUTDOOR/2024-03-06-17-30-39.bag"
+#output_path: "/media/arvc/INTENSO/DATASETS/OUTDOOR/2024-03-06-17-30-39"
+
+rosbag_path: '/media/arvc/INTENSO/DATASETS/OUTDOOR/2024-03-12-16-48-19.bag'
+output_path: '/media/arvc/INTENSO/DATASETS/OUTDOOR/2024-03-12-16-48-19'
 
 # Specify the topic name or null to save the data
 # ODOMETRY

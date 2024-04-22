@@ -21,12 +21,46 @@ robot0/
 import rosbag
 import yaml
 from eurocsaver.eurocsaver import EurocSaver
+import sys
+import getopt
+
+
+def find_options(argv):
+    rosbag_path = None
+    output_path = None
+    try:
+        opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "odir="])
+    except getopt.GetoptError:
+        print('extract_rosbag.py -i <rosbagfile> -o <outputdirectory>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print('extract_rosbag.py -i <rosbagfile> -o <outputdirectory>')
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            rosbag_path = arg
+        elif opt in ("-o", "--odir"):
+            output_path = arg
+    print('Input ROSBAG file is: ', rosbag_path)
+    print('Output directory is: ', output_path)
+    return rosbag_path, output_path
+
 
 if __name__ == '__main__':
     # TOPICS TO EXTRACT AND PATH CONFIGURATION FROM YAML
     with open(r'config.yaml') as file:
         param_list = yaml.load(file, Loader=yaml.FullLoader)
         print(param_list)
+    # get paths of input filename and output directory
+    # CAUTION: if run without arguments, the input and output are read from the yaml
+    # alternatively, both arguments can be passed as command line arguments
+    rosbag_path, output_path = find_options(sys.argv[1:])
+    if rosbag_path is None or output_path is None:
+        rosbag_path = param_list.get('rosbag_path')
+        output_path = param_list.get('output_path')
+    else:
+        print('Processing file: ', rosbag_path)
+        print('Output directory: ', output_path)
 
     topic_name_ground_truth = param_list.get('topic_name_ground_truth')
     topic_name_point_cloud = param_list.get('topic_name_point_cloud')
@@ -38,9 +72,7 @@ if __name__ == '__main__':
     topic_name_tf_static = param_list.get('topic_name_tf_static')
     topic_name_gps_filtered = param_list.get('topic_name_gps_filtered')
     topic_name_odometry_gps = param_list.get('topic_name_odometry_gps')
-    # get paths
-    rosbag_path = param_list.get('rosbag_path')
-    output_path = param_list.get('output_path')
+
     # extract topics?
     save_point_cloud_as_csv = param_list.get('save_point_cloud_as_csv')
     save_point_cloud_as_pcd = param_list.get('save_point_cloud_as_pcd')
