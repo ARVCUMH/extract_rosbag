@@ -463,7 +463,9 @@ class EurocSaver():
         epoch_list = []
         print('Finding the number of lidar clouds')
         for topic, msg, t in bag_file.read_messages(topics=[topic]):
-            time_str = str(msg.header.stamp)
+            # time_str = str(msg.header.stamp)
+            # caution! msg.header.stamp may fail if using rostopic drop
+            time_str = str(t)
             # print(time_str)
             epoch_list.append(time_str)
         # TIMESTAMPS ONLY
@@ -479,7 +481,8 @@ class EurocSaver():
         for topic, msg, t in bag_file.read_messages(topics=[topic]):
             print('Percentage complete: ', 100*k/N, '%')
             k += 1
-            time_str = str(msg.header.stamp)
+            # time_str = str(msg.header.stamp)
+            time_str = str(t)
             # epoch_list.append(time_str)
             field_names = [field.name for field in msg.fields]
             points = list(pc2.read_points(msg, skip_nans=True, field_names=field_names))

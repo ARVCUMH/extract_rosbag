@@ -168,7 +168,6 @@ if __name__ == '__main__':
         except IndexError:
             print('Error saving', topic_name_point_cloud)
             pass
-
     if topic_name_tf:
         try:
             print('Saving topic_name_tf: ', topic_name_tf)
