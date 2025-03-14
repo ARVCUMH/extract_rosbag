@@ -35,6 +35,7 @@ class EurocSaver():
         self.lidar_directory = euroc_directory + '/robot0/lidar'
         self.ground_truth_directory = euroc_directory + '/robot0/ground_truth'
         self.camera_directory = euroc_directory + '/robot0/camera'
+        self.aruco_directory = euroc_directory + '/robot0/aruco'
 
     def save_tf(self, bag_file, topic):
         """
@@ -476,21 +477,27 @@ class EurocSaver():
         k = 0
         N = len(epoch_list)
         for topic, msg, t in bag_file.read_messages(topics=[topic]):
-            print('Percentage complete: ', 100*k/N)
+            print('Percentage complete: ', 100*k/N, '%')
             k += 1
             time_str = str(msg.header.stamp)
             # epoch_list.append(time_str)
             field_names = [field.name for field in msg.fields]
             points = list(pc2.read_points(msg, skip_nans=True, field_names=field_names))
             if len(points) == 0:
-                print("Converting an empty cloud")
+                print("CAUTION!!! Converting an empty cloud!!!!!!!!!!!!")
                 break
 
+            # saving also reflectivity
+            #  Lidar and pointcloud simple tutorial for open3D
             pcd_array = np.asarray(points)
+            colors = np.zeros((pcd_array.shape[0], 3))
             if to_pcd:
-                cloud = pcd_array[:, 0:3]
+                points = pcd_array[:, 0:3]
+                # saving reflectivity only
+                colors[:, 0] = pcd_array[:, 5]
                 pointcloud = o3d.geometry.PointCloud()
-                pointcloud.points = o3d.utility.Vector3dVector(cloud)
+                pointcloud.points = o3d.utility.Vector3dVector(points)
+                pointcloud.colors = o3d.utility.Vector3dVector(colors)
                 output_directory = self.lidar_directory + '/data/'
                 output_filename = output_directory + time_str + ".pcd"
                 print('Wrote: ', output_filename)
@@ -565,5 +572,45 @@ class EurocSaver():
             print('Saving image: ', self.camera_directory + '/data/' + str(msg.header.stamp) + '.png')
             cv2.imwrite(self.camera_directory + '/data/' + str(msg.header.stamp)+'.png', cv_image)
 
-
-
+    def save_aruco_observations(self, bag_file, topic):
+        """
+        Saves ARUCO OBSERVATIONS in the camera reference frame
+        A relative observations is saved, along with the ARUCO identifier
+        """
+        try:
+            os.makedirs(self.aruco_directory)
+        except OSError:
+            print("Directory exists or creation failed", self.aruco_directory)
+        epoch_list = []
+        xyz_list = []
+        q_list = []
+        aruco_id_list = []
+        for topic, msg, t in bag_file.read_messages(topics=[topic]):
+            time_str = str(msg.header.stamp)
+            epoch_list.append(time_str)
+            xyz_list.append([msg.pose.position.x, msg.pose.position.y, msg.pose.position.z])
+            q_list.append([msg.pose.orientation.x, msg.pose.orientation.y, msg.pose.orientation.z, msg.pose.orientation.w])
+            # caution. the aruco id is saved as frame_id in a Pose message
+            aruco_id_list.append(int(msg.header.frame_id))
+        print('FOUND: ', len(aruco_id_list), 'ARUCO OBSERVATIONS!')
+        xyz_list = np.array(xyz_list)
+        q_list = np.array(q_list)
+        aruco_id_list = np.array(aruco_id_list)
+        raw_data = {'timestamp': epoch_list,
+                    'x': xyz_list[:, 0],
+                    'y': xyz_list[:, 1],
+                    'z': xyz_list[:, 2],
+                    'qx': q_list[:, 0],
+                    'qy': q_list[:, 1],
+                    'qz': q_list[:, 2],
+                    'qw': q_list[:, 3],
+                    'aruco_id': aruco_id_list
+                    }
+        df = pd.DataFrame(raw_data, columns=['timestamp', 'x', 'y', 'z', 'qx', 'qy', 'qz', 'qw', 'aruco_id'])
+        df.to_csv(self.aruco_directory + '/data.csv', index=False, header=['#timestamp [ns]',
+                                                                              'x', 'y', 'z',
+                                                                              'qx', 'qy', 'qz', 'qw', 'aruco_id'])
+        print('Saving topic ARUCO data.csv: ')
+        print(df)
+        print('\n---')
+        return True

@@ -72,6 +72,7 @@ if __name__ == '__main__':
     topic_name_tf_static = param_list.get('topic_name_tf_static')
     topic_name_gps_filtered = param_list.get('topic_name_gps_filtered')
     topic_name_odometry_gps = param_list.get('topic_name_odometry_gps')
+    topic_name_aruco_observations = param_list.get('topic_name_aruco_observations')
 
     # extract topics?
     save_point_cloud_as_csv = param_list.get('save_point_cloud_as_csv')
@@ -83,6 +84,7 @@ if __name__ == '__main__':
     print('GPS TOPIC: ', topic_name_gps)
     print('IMU TOPIC: ', topic_name_imu)
     print('CAMERA TOPIC: ', topic_name_camera)
+    print('ARUCO OBSERVATIONS : ', topic_name_aruco_observations)
 
     # WRITE ROBOT0 DIRECTORY
     eurocsaver = EurocSaver(euroc_directory=output_path)
@@ -147,6 +149,14 @@ if __name__ == '__main__':
             print('Error saving', topic_name_camera)
             print('The topic name may be non-existent')
             pass
+    if topic_name_aruco_observations:
+        try:
+            print('Saving: ', topic_name_aruco_observations)
+            eurocsaver.save_aruco_observations(bag, topic_name_aruco_observations)
+        except IndexError:
+            print('Error saving', topic_name_aruco_observations)
+            print('The topic name may be non-existent')
+            pass
     if topic_name_point_cloud:
         print('Saving LiDAR points as csv: ', save_point_cloud_as_csv)
         print('Saving LiDAR points as pcd: ', save_point_cloud_as_pcd)
@@ -158,6 +168,7 @@ if __name__ == '__main__':
         except IndexError:
             print('Error saving', topic_name_point_cloud)
             pass
+
     if topic_name_tf:
         try:
             print('Saving topic_name_tf: ', topic_name_tf)
